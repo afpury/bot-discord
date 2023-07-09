@@ -1,26 +1,21 @@
 import discord
-
+from discord.ext import commands
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix='$', intents=intents)
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f'We have logged in as {client.user}')
+    print(f'We have logged in as {bot.user}')
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-    if message.content.startswith('hello'):
-        await message.channel.send(f'Hi! I am a bot {client.user}!')
-    elif  message.content.startswith('heh'):
-        if len(message.content) > 4:
-            count_heh = int(message.content[4:])
-        else:
-            count_heh = 5
-        await message.channel.send("he" * count_heh)
-        
-client.run("MTEyNzUxMDUyNjgwMTQ5NDEyNw.GylVMZ.gzOp3Sx9RokLz3nOCppr-4-QxfZQjsDPqpO1HQ")
+@bot.command()
+async def hello(ctx):
+    await ctx.send(f'Hi! I am a bot {bot.user}!')
+
+@bot.command()
+async def heh(ctx, count_heh = 5):
+    await ctx.send("he" * count_heh)
+
+bot.run("MTEyNzUxMDUyNjgwMTQ5NDEyNw.GylVMZ.gzOp3Sx9RokLz3nOCppr-4-QxfZQjsDPqpO1HQ")
